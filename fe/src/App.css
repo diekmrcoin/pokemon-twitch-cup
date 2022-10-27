@@ -1,0 +1,17 @@
+.App {
+  text-align: center;
+  margin-top: 1em;
+}
+
+.appTeamImage {
+  max-width: 900px;
+  width: 100%;
+}
+
+.twitterLogo {
+  width: 2em;
+}
+
+.contact_me {
+  color: white;
+}

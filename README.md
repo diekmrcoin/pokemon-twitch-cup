@@ -1,2 +1,2 @@
 # pokemon-twitch-cup
-Web app for the pokemon twitch cup fan followers
+Web app para facilitar a los fans el seguimiento del evento.
