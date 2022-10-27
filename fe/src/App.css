@@ -4,7 +4,6 @@
 }
 
 .appTeamImage {
-  max-width: 900px;
   width: 100%;
 }
 
@@ -13,5 +12,16 @@
 }
 
 .contact_me {
+  text-align: left;
+  color: white;
+}
+
+.colaborate {
+  text-align: left;
+  color: white;
+}
+
+.resume {
+  text-align: justify;
   color: white;
 }
