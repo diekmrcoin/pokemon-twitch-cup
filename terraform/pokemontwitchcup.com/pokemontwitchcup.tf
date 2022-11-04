@@ -46,9 +46,10 @@ resource "aws_route53_record" "www" {
 }
 
 resource "aws_acm_certificate" "main_cert" {
-  domain_name       = "pokemontwitchcup.com"
-  validation_method = "DNS"
-  provider          = aws.cloudfront
+  domain_name               = aws_route53_record.www.name
+  subject_alternative_names = ["www.${aws_route53_record.www.name}"]
+  validation_method         = "DNS"
+  provider                  = aws.cloudfront
   lifecycle {
     create_before_destroy = true
   }
@@ -74,6 +75,18 @@ resource "aws_route53_record" "cloudfront" {
   }
   type    = "A"
   zone_id = local.zone_id
+}
+
+resource "aws_route53_record" "www_cloudfront" {
+  name           = "www.${aws_route53_record.www.name}"
+  type           = "CNAME"
+  zone_id        = local.zone_id
+  set_identifier = "www"
+  records        = [aws_cloudfront_distribution.main.domain_name]
+  ttl            = 5
+  weighted_routing_policy {
+    weight = 100
+  }
 }
 
 resource "aws_s3_bucket" "ui" {
@@ -124,7 +137,7 @@ resource "aws_cloudfront_origin_access_identity" "main" {
 resource "aws_cloudfront_distribution" "main" {
   enabled         = true
   is_ipv6_enabled = false
-  aliases         = [aws_route53_record.www.name]
+  aliases         = [aws_route53_record.www.name, "www.${aws_route53_record.www.name}"]
   viewer_certificate {
     acm_certificate_arn      = aws_acm_certificate.main_cert.arn
     ssl_support_method       = "sni-only"
